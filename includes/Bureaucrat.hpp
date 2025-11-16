@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:13:22 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/07 15:20:59 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/15 22:04:42 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ public:
   Bureaucrat();
   Bureaucrat(const std::string &name, const int &grade);
   Bureaucrat(const Bureaucrat &obj);
+  Bureaucrat &operator=(const Bureaucrat &obj);
   ~Bureaucrat();
 
   // Getters and setters
@@ -32,15 +33,19 @@ public:
   void setGrade(const int &grade);
 
   // Other
-  void incrementGrade(int grade);
-  void decrementGrade(int grade);
+  void incrementGrade();
+  void decrementGrade();
 
   // Exception classes
   class GradeTooHighException : public std::exception {
   public:
-    virtual const what *() const throw();
+    const char *what() const throw() override;
+  };
+
+  class GradeTooLowException : public std::exception {
+  public:
+    const char *what() const throw() override;
   };
 };
 
 std::ostream &operator<<(std::ostream &output, const Bureaucrat &obj);
-void section(std::string name);
