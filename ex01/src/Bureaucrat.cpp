@@ -6,11 +6,12 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 18:10:41 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/15 22:26:44 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:25:29 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Bureaucrat.hpp"
+#include "../includes/Form.hpp"
 #include "../includes/utils.hpp"
 #include <exception>
 #include <iostream>
@@ -64,6 +65,15 @@ const char *Bureaucrat::GradeTooLowException::what() const noexcept {
 void Bureaucrat::incrementGrade() { setGrade(--_grade); }
 
 void Bureaucrat::decrementGrade() { setGrade(++_grade); }
+
+void Bureaucrat::signForm(Form &f) const {
+  try {
+    f.beSigned(*this);
+  } catch (std::exception &e) {
+    std::cerr << colortxt("[Error]: ", RED) << _name << " couldn't sign "
+              << f.getName() << " because " << e.what() << ".\n";
+  }
+}
 
 std::ostream &operator<<(std::ostream &output, const Bureaucrat &obj) {
   output << obj.getName() << ", bureaucrat grade " << obj.getGrade();

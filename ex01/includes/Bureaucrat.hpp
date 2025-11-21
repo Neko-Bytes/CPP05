@@ -6,12 +6,14 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:13:22 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/15 22:04:42 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/21 17:20:12 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <exception>
 #include <iostream>
+
+class Form;
 
 class Bureaucrat {
 private:
@@ -46,6 +48,8 @@ public:
   public:
     const char *what() const noexcept override;
   };
+
+  void signForm(Form &f) const;
 };
 
 std::ostream &operator<<(std::ostream &output, const Bureaucrat &obj);
