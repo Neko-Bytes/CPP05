@@ -1,0 +1,39 @@
+# CONFIG
+NAME      := form
+CXX       := c++
+CXXFLAGS  := -Wall -Wextra -Werror -std=c++17 -Iincludes
+
+SRC_DIR   := src
+OBJ_DIR   := obj
+
+# Source files
+SRCS := Bureaucrat.cpp Form.cpp utils.cpp main.cpp
+
+SRC_PATHS := $(addprefix $(SRC_DIR)/, $(SRCS))
+OBJ_PATHS := $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
+DEP_FILES := $(OBJ_PATHS:.o=.d)
+
+all: $(NAME)
+
+$(NAME): $(OBJ_PATHS)
+	@echo "Linking $(NAME)..."
+	@$(CXX) $(CXXFLAGS) $^ -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@echo "Compiling $<"
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	@echo "Removing object files..."
+	@rm -rf $(OBJ_DIR)
+
+fclean: clean
+	@echo "Removing executable..."
+	@rm -f $(NAME)
+
+re: fclean all
+
+-include $(DEP_FILES)
+
+.PHONY: all clean fclean re
