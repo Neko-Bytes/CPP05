@@ -6,10 +6,11 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:13:22 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/21 17:20:12 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 18:59:15 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/AForm.hpp"
 #include <exception>
 #include <iostream>
 
@@ -37,6 +38,7 @@ public:
   // Other
   void incrementGrade();
   void decrementGrade();
+  void executeForm(AForm const &form) const;
 
   // Exception classes
   class GradeTooHighException : public std::exception {

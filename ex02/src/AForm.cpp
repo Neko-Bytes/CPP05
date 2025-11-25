@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:51:28 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/24 22:19:33 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:33:50 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,19 @@ void AForm::beSigned(const Bureaucrat &b) {
   if (_isSigned == true)
     throw AlreadySignedException();
   _isSigned = true;
-  colorprint("[Success]: ", GREEN);
-  std::cout << b.getName() << " has signed " << _name << std::endl;
+  colorprint(b.getName() + " has signed " + _name, GREEN);
 }
 
+void AForm::execute(const Bureaucrat &executor) const {
+  if (!isSigned())
+    throw FormException(FormException::NotSigned);
+  if (executor.getGrade() > _gradeToExecute)
+    throw FormException(FormException::GradeTooLow);
+  else
+    colorprint(executor.getName() + " executed " + _name, GREEN);
+}
+
+// Exceptions
 const char *AForm::GradeTooLowException::what() const noexcept {
   return ("grade is too low to be signed");
 }
@@ -74,6 +83,8 @@ const char *AForm::AlreadySignedException::what() const noexcept {
   return ("document has been already signed");
 }
 
+AForm::FormException::FormException(type t) : _t(t) {}
+
 const char *AForm::FormException::what() const noexcept {
   switch (_t) {
   case GradeTooHigh:
@@ -85,6 +96,7 @@ const char *AForm::FormException::what() const noexcept {
   case NotSigned:
     return ("document hasn't been signed yet");
   }
+  return ("Unknown Exception");
 }
 
 // Output operator

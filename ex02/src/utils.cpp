@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 21:41:15 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/15 22:16:14 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:11:26 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void colorprint(const std::string &str, const std::string &color) {
   if (color == RED)
     std::cout << colortxt("[Error]: ", RED) << str << std::endl;
+  else if (color == GREEN)
+    std::cout << colortxt("[Success]: ", GREEN) << str << std::endl;
   else
     std::cout << colortxt(str, color);
 }

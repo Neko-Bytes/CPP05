@@ -1,43 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
+/*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 08:55:48 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/25 19:17:51 by kmummadi         ###   ########.fr       */
+/*   Created: 2025/11/25 18:51:40 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/11/25 19:17:35 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/RobotomyRequestForm.hpp"
+#include "../includes/PresidentialPardonForm.hpp"
 #include "../includes/AForm.hpp"
 #include "../includes/Bureaucrat.hpp"
 #include "../includes/utils.hpp"
-#include <fstream>
 
 // Constructors and Destructors
-RobotomyRequestForm::RobotomyRequestForm()
-    : AForm("Robotomy-Default", 145, 137), _target("Robotomy-Default") {}
+PresidentialPardonForm::PresidentialPardonForm()
+    : AForm("Presidential-Default", 25, 5), _target("Presidential-Default") {}
 
-RobotomyRequestForm::RobotomyRequestForm(const std::string &target)
-    : AForm("Robotomy-Default", 145, 137), _target(target) {}
+PresidentialPardonForm::PresidentialPardonForm(const std::string &target)
+    : AForm("Presidential-Default", 25, 5), _target(target) {}
 
-RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &form)
+PresidentialPardonForm::PresidentialPardonForm(
+    const PresidentialPardonForm &form)
     : AForm(form), _target(form._target) {}
 
-RobotomyRequestForm &
-RobotomyRequestForm::operator=(const RobotomyRequestForm &form) {
+PresidentialPardonForm &
+PresidentialPardonForm::operator=(const PresidentialPardonForm &form) {
   if (this != &form)
     _target = form._target;
   return (*this);
 }
 
-RobotomyRequestForm::~RobotomyRequestForm() {}
+PresidentialPardonForm::~PresidentialPardonForm() {}
 
 // Execute
-void RobotomyRequestForm::execute(Bureaucrat const &executor) const {
-  static bool success = false;
+void PresidentialPardonForm::execute(Bureaucrat const &executor) const {
   int grade = executor.getGrade();
 
   if (!this->isSigned())
@@ -45,16 +44,13 @@ void RobotomyRequestForm::execute(Bureaucrat const &executor) const {
   if (grade > this->getGradeToSign() && grade > this->getGradeToExecute())
     throw(AForm::FormException(FormException::GradeTooLow));
   else {
-    if (success)
-      colorprint(_target + " has been Robotomized.", GREEN);
-    else
-      colorprint(_target + " could not be Robotomized.", RED);
+    colorprint(_target + " has been pardoned by Zaphod Beeblebrox.", GREEN);
   }
 }
 
 // Getters and Setters
-std::string &RobotomyRequestForm::getTarget() { return (_target); }
+std::string &PresidentialPardonForm::getTarget() { return (_target); }
 
-void RobotomyRequestForm::setTarget(const std::string &target) {
+void PresidentialPardonForm::setTarget(const std::string &target) {
   _target = target;
 }

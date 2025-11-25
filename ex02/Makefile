@@ -7,7 +7,9 @@ SRC_DIR   := src
 OBJ_DIR   := obj
 
 # Source files
-SRCS := Bureaucrat.cpp Form.cpp utils.cpp main.cpp
+SRCS := Bureaucrat.cpp AForm.cpp utils.cpp main.cpp \
+				PresidentialPardonForm.cpp ShrubberyCreationForm.cpp \
+				RobotomyRequestForm.cpp
 
 SRC_PATHS := $(addprefix $(SRC_DIR)/, $(SRCS))
 OBJ_PATHS := $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))

@@ -6,101 +6,125 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 22:26:52 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/21 17:27:27 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:12:58 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/AForm.hpp"
 #include "../includes/Bureaucrat.hpp"
+#include "../includes/PresidentialPardonForm.hpp"
+#include "../includes/RobotomyRequestForm.hpp"
+#include "../includes/ShrubberyCreationForm.hpp"
 #include "../includes/utils.hpp"
 #include <iostream>
 
 int main() {
-  section("CPP05 ex01 – AForm Signing Tests");
+  section("CPP05 EX02 – AForm Execution Tests");
 
-  // Testing a valid form signing (bureaucrat grade high enough)
-  section("Test 1: Successful signing");
+  // --------------------------------------------------------
+  section("Test 1: Shrubbery – Successful execute");
   {
     try {
-      Bureaucrat a("Alice", 40);
-      AForm f("TaxReturn", 50, 20);
+      Bureaucrat boss("Boss", 1);
+      ShrubberyCreationForm f("garden");
 
-      std::cout << a << std::endl;
+      std::cout << boss << std::endl;
       std::cout << f << std::endl;
 
-      a.signForm(f);
-      std::cout << f << std::endl;
-    } catch (std::exception &e) {
+      boss.signForm(f);
+      boss.executeForm(f);
+    } catch (const std::exception &e) {
       colorprint(e.what(), RED);
     }
   }
 
-  // Testing signing when bureaucrat grade is too low
-  section("Test 2: Signing fails (grade too low)");
+  // --------------------------------------------------------
+  section("Test 2: Shrubbery – Execute without signing");
   {
     try {
-      Bureaucrat b("Bob", 120);
-      AForm f("TopSecret", 50, 25);
+      Bureaucrat mid("Mid", 40);
+      ShrubberyCreationForm f("backyard");
 
-      std::cout << b << std::endl;
+      std::cout << mid << std::endl;
       std::cout << f << std::endl;
 
-      b.signForm(f); // should fail
-      std::cout << f << std::endl;
-    } catch (std::exception &e) {
+      mid.executeForm(f); // should fail
+    } catch (const std::exception &e) {
       colorprint(e.what(), RED);
     }
   }
 
-  // Testing boundary: grade exactly equal to required
-  section("Test 3: Boundary grade signing");
+  // --------------------------------------------------------
+  section("Test 3: Shrubbery – Grade too low for execution");
   {
     try {
-      Bureaucrat c("Charlie", 50);
-      AForm f("SimpleAForm", 50, 100);
+      Bureaucrat low("Low", 150);
+      ShrubberyCreationForm f("terrace");
 
-      std::cout << c << std::endl;
-      std::cout << f << std::endl;
-
-      c.signForm(f); // should succeed
-      std::cout << f << std::endl;
-    } catch (std::exception &e) {
+      low.signForm(f);
+      low.executeForm(f); // should fail
+    } catch (const std::exception &e) {
       colorprint(e.what(), RED);
     }
   }
 
-  // Testing trying to sign an already signed form
-  section("Test 4: Signing an already signed form");
+  // --------------------------------------------------------
+  section("Test 4: Robotomy – Random drilling");
   {
     try {
-      Bureaucrat d("Diana", 10);
-      AForm f("Contract", 20, 50);
+      Bureaucrat b("RoboMaster", 1);
+      RobotomyRequestForm f("TargetX");
 
-      d.signForm(f); // first time OK
-      d.signForm(f); // second time is allowed but doesn't change signed state
-
-      std::cout << f << std::endl;
-    } catch (std::exception &e) {
+      b.signForm(f);
+      b.executeForm(f); // should run drill, success/failure 50%
+      b.executeForm(f); // run twice for randomness
+      b.executeForm(f);
+    } catch (const std::exception &e) {
       colorprint(e.what(), RED);
     }
   }
 
-  // Testing constructor with invalid grades
-  section("Test 5: Invalid form construction");
+  // --------------------------------------------------------
+  section("Test 5: Robotomy – Missing signature");
   {
     try {
-      AForm bad("FailAForm", 0, 10); // invalid: grade < 1
-    } catch (std::exception &e) {
-      colorprint(e.what(), RED);
-    }
+      Bureaucrat b("Tester", 1);
+      RobotomyRequestForm f("TargetY");
 
-    try {
-      AForm bad2("FailAForm2", 10, 200); // invalid: grade > 150
-    } catch (std::exception &e) {
+      b.executeForm(f); // should fail (not signed)
+    } catch (const std::exception &e) {
       colorprint(e.what(), RED);
     }
   }
 
-  section("All tests completed");
-  return 0;
+  // --------------------------------------------------------
+  section("Test 6: Presidential Pardon – Successful");
+  {
+    try {
+      Bureaucrat pres("President", 1);
+      PresidentialPardonForm f("Prisoner42");
+
+      pres.signForm(f);
+      pres.executeForm(f);
+    } catch (const std::exception &e) {
+      colorprint(e.what(), RED);
+    }
+  }
+
+  // --------------------------------------------------------
+  section("Test 7: Presidential Pardon – Grade too low");
+  {
+    try {
+      Bureaucrat low("Intern", 150);
+      PresidentialPardonForm f("Nobody");
+
+      low.signForm(f);    // should fail
+      low.executeForm(f); // should also fail
+    } catch (const std::exception &e) {
+      colorprint(e.what(), RED);
+    }
+  }
+
+  section("All EX02 tests finished");
+  return (0);
 }

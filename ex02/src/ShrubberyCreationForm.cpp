@@ -6,11 +6,12 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 22:01:55 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/25 08:53:24 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:18:06 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ShrubberyCreationForm.hpp"
+#include "../includes/AForm.hpp"
 #include "../includes/Bureaucrat.hpp"
 #include <fstream>
 

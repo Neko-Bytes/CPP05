@@ -6,7 +6,7 @@
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 18:10:41 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/21 17:25:29 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/11/25 19:35:19 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ const char *Bureaucrat::GradeTooLowException::what() const noexcept {
 void Bureaucrat::incrementGrade() { setGrade(--_grade); }
 
 void Bureaucrat::decrementGrade() { setGrade(++_grade); }
+
+void Bureaucrat::executeForm(AForm const &form) const {
+  try {
+    form.execute(*this);
+  } catch (std::exception &e) {
+    colorprint(_name + " could not execute the form - " + e.what(), RED);
+  }
+}
 
 void Bureaucrat::signForm(AForm &f) const {
   try {
