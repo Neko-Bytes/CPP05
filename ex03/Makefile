@@ -32,7 +32,6 @@ clean:
 
 fclean: clean
 	@echo "Removing executable..."
-	@rm -f garden_shrubbery
 	@rm -f $(NAME)
 
 re: fclean all
