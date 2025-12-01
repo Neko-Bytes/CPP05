@@ -5,126 +5,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmummadi <kmummadi@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/15 22:26:52 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/11/25 19:12:58 by kmummadi         ###   ########.fr       */
+/*   Created: 2025/12/01 15:30:35 by kmummadi          #+#    #+#             */
+/*   Updated: 2025/12/01 15:31:27 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/AForm.hpp"
 #include "../includes/Bureaucrat.hpp"
-#include "../includes/PresidentialPardonForm.hpp"
-#include "../includes/RobotomyRequestForm.hpp"
-#include "../includes/ShrubberyCreationForm.hpp"
+#include "../includes/Intern.hpp"
 #include "../includes/utils.hpp"
 #include <iostream>
 
 int main() {
-  section("CPP05 EX02 – AForm Execution Tests");
+  section("CPP05 EX03 – Intern and Form Creation Tests");
+
+  Intern intern;
+  Bureaucrat highGrade("HighGrade", 1);
+  Bureaucrat midGrade("MidGrade", 50);
 
   // --------------------------------------------------------
-  section("Test 1: Shrubbery – Successful execute");
-  {
-    try {
-      Bureaucrat boss("Boss", 1);
-      ShrubberyCreationForm f("garden");
-
-      std::cout << boss << std::endl;
-      std::cout << f << std::endl;
-
-      boss.signForm(f);
-      boss.executeForm(f);
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
+  section("Test 1: Intern creates Shrubbery Creation Form (Success)");
+  AForm *shrubberyForm = NULL;
+  try {
+    shrubberyForm = intern.makeForm("shrubbery creation", "Forest");
+    if (shrubberyForm) {
+      std::cout << *shrubberyForm << std::endl;
+      highGrade.signForm(*shrubberyForm);
+      highGrade.executeForm(*shrubberyForm);
     }
+  } catch (const std::exception &e) {
+    colorprint(e.what(), RED);
   }
+  delete shrubberyForm;
 
   // --------------------------------------------------------
-  section("Test 2: Shrubbery – Execute without signing");
-  {
-    try {
-      Bureaucrat mid("Mid", 40);
-      ShrubberyCreationForm f("backyard");
-
-      std::cout << mid << std::endl;
-      std::cout << f << std::endl;
-
-      mid.executeForm(f); // should fail
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
+  section("Test 2: Intern creates Robotomy Request Form (Success and Execute)");
+  AForm *robotomyForm = NULL;
+  try {
+    robotomyForm = intern.makeForm("robotomy request", "Bender");
+    if (robotomyForm) {
+      std::cout << *robotomyForm << std::endl;
+      midGrade.signForm(*robotomyForm);  // Grade to sign is 45, MidGrade is 50
+                                         // (should fail sign)
+      highGrade.signForm(*robotomyForm); // Grade to sign is 45, HighGrade is 1
+                                         // (should succeed)
+      highGrade.executeForm(
+          *robotomyForm); // Execute multiple times to test 50% chance
+      highGrade.executeForm(*robotomyForm);
     }
+  } catch (const std::exception &e) {
+    colorprint(e.what(), RED);
   }
+  delete robotomyForm;
 
   // --------------------------------------------------------
-  section("Test 3: Shrubbery – Grade too low for execution");
-  {
-    try {
-      Bureaucrat low("Low", 150);
-      ShrubberyCreationForm f("terrace");
-
-      low.signForm(f);
-      low.executeForm(f); // should fail
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
+  section(
+      "Test 3: Intern creates Presidential Pardon Form (Success and Execute)");
+  AForm *pardonForm = NULL;
+  try {
+    pardonForm = intern.makeForm("presidential pardon", "Ford Prefect");
+    if (pardonForm) {
+      std::cout << *pardonForm << std::endl;
+      highGrade.signForm(*pardonForm);
+      highGrade.executeForm(*pardonForm);
     }
+  } catch (const std::exception &e) {
+    colorprint(e.what(), RED);
   }
+  delete pardonForm;
 
   // --------------------------------------------------------
-  section("Test 4: Robotomy – Random drilling");
-  {
-    try {
-      Bureaucrat b("RoboMaster", 1);
-      RobotomyRequestForm f("TargetX");
-
-      b.signForm(f);
-      b.executeForm(f); // should run drill, success/failure 50%
-      b.executeForm(f); // run twice for randomness
-      b.executeForm(f);
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
-    }
+  section("Test 4: Intern tries to create an UNKNOWN Form (Failure)");
+  AForm *unknownForm = NULL;
+  try {
+    unknownForm = intern.makeForm("nuclear blast request", "Earth");
+    if (unknownForm)
+      std::cout << *unknownForm << std::endl;
+  } catch (const std::exception &e) {
+    colorprint(e.what(), RED);
   }
+  delete unknownForm; // Safe to delete NULL
 
   // --------------------------------------------------------
-  section("Test 5: Robotomy – Missing signature");
-  {
-    try {
-      Bureaucrat b("Tester", 1);
-      RobotomyRequestForm f("TargetY");
-
-      b.executeForm(f); // should fail (not signed)
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
-    }
+  section("Test 5: Execution attempt by low-grade bureaucrat");
+  Bureaucrat lowGrade("LowGrade", 150);
+  AForm *shrubberyTest = intern.makeForm("shrubbery creation", "Bush");
+  if (shrubberyTest) {
+    lowGrade.signForm(*shrubberyTest);  // Should fail to sign (required 145)
+    highGrade.signForm(*shrubberyTest); // Force sign (required 145, grade 1)
+    lowGrade.executeForm(
+        *shrubberyTest); // Should fail to execute (required 137, grade 150)
   }
+  delete shrubberyTest;
 
-  // --------------------------------------------------------
-  section("Test 6: Presidential Pardon – Successful");
-  {
-    try {
-      Bureaucrat pres("President", 1);
-      PresidentialPardonForm f("Prisoner42");
-
-      pres.signForm(f);
-      pres.executeForm(f);
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
-    }
-  }
-
-  // --------------------------------------------------------
-  section("Test 7: Presidential Pardon – Grade too low");
-  {
-    try {
-      Bureaucrat low("Intern", 150);
-      PresidentialPardonForm f("Nobody");
-
-      low.signForm(f);    // should fail
-      low.executeForm(f); // should also fail
-    } catch (const std::exception &e) {
-      colorprint(e.what(), RED);
-    }
-  }
-
-  section("All EX02 tests finished");
+  section("All EX03 tests finished");
   return (0);
 }

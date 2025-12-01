@@ -20,10 +20,10 @@
 
 Intern::Intern() {}
 
-Intern::Intern(const Intern &other) { (void)other; }
+Intern::Intern(const Intern &obj) { (void)obj; }
 
-Intern &Intern::operator=(const Intern &other) {
-  (void)other;
+Intern &Intern::operator=(const Intern &obj) {
+  (void)obj;
   return (*this);
 }
 
@@ -34,10 +34,25 @@ AForm *Intern::makeForm(const std::string &name, std::string target) {
                           "presidential pardon"};
 
   AForm *(*formcreator[3])(const std::string &) = {
-      [](const std::string &form) { return (new (ShrubberyCreationForm(form));
+      [](const std::string &form) -> AForm * {
+        return (new ShrubberyCreationForm(form));
       },
-      [](const std::string &form) { return (new RobotomyRequestForm(form)); },
-      [](const std::string &form) {
+      [](const std::string &form) -> AForm * {
+        return (new RobotomyRequestForm(form));
+      },
+      [](const std::string &form) -> AForm * {
         return (new PresidentialPardonForm(form));
       }};
+
+  for (int i = 0; i < 3; ++i) {
+    if (name == names[i]) {
+      colorprint("Intern has created " + name + " form.", GREEN);
+      return (formcreator[i](target));
+    }
+  }
+  throw(InvalidFormException());
+}
+
+const char *Intern::InvalidFormException::what() const noexcept {
+  return ("Invalid form");
 }

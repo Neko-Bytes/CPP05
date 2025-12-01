@@ -9,7 +9,7 @@ OBJ_DIR   := obj
 # Source files
 SRCS := Bureaucrat.cpp AForm.cpp utils.cpp main.cpp \
 				PresidentialPardonForm.cpp ShrubberyCreationForm.cpp \
-				RobotomyRequestForm.cpp
+				RobotomyRequestForm.cpp Intern.cpp
 
 SRC_PATHS := $(addprefix $(SRC_DIR)/, $(SRCS))
 OBJ_PATHS := $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
@@ -32,6 +32,7 @@ clean:
 
 fclean: clean
 	@echo "Removing executable..."
+	@rm -f garden_shrubbery
 	@rm -f $(NAME)
 
 re: fclean all

@@ -15,6 +15,7 @@
 #include "../includes/RobotomyRequestForm.hpp"
 #include "../includes/ShrubberyCreationForm.hpp"
 #include "../includes/utils.hpp"
+#include <exception>
 #include <iostream>
 
 class Intern {
@@ -27,4 +28,7 @@ public:
 
   // Functions
   AForm *makeForm(const std::string &name, std::string target);
+  class InvalidFormException : std::exception {
+    const char *what() const noexcept override;
+  };
 };
