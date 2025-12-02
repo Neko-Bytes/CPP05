@@ -51,6 +51,7 @@ AForm *Intern::makeForm(const std::string &name, std::string target) {
     }
   }
   throw(InvalidFormException());
+  return (NULL);
 }
 
 const char *Intern::InvalidFormException::what() const noexcept {

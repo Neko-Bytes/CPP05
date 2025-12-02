@@ -28,7 +28,8 @@ public:
 
   // Functions
   AForm *makeForm(const std::string &name, std::string target);
-  class InvalidFormException : std::exception {
+  class InvalidFormException : public std::exception {
+  public:
     const char *what() const noexcept override;
   };
 };
